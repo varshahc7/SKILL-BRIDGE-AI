@@ -7,28 +7,37 @@ def main():
     # Load job-role dataset
     data = load_job_roles()
 
-    # Example student profile
+    # Get student's skills from user
+    student_input = input(
+        "Enter your skills (comma-separated): "
+    )
+
     student_skills = [
-        "Python",
-        "Pandas",
-        "NumPy",
-        "Git"
+        skill.strip()
+        for skill in student_input.split(",")
+        if skill.strip()
     ]
 
-    # Target job role
-    target_role = "Machine Learning Engineer"
+    # Get target job role from user
+    target_role = input(
+        "Enter your target job role: "
+    ).strip()
 
     # Find the target role
     job = get_job_role(data, target_role)
 
     if job is None:
-        print(f"Job role '{target_role}' was not found.")
+        print(f"\nJob role '{target_role}' was not found.")
+        print("\nAvailable roles:")
+        for role in data["role"]:
+            print(f"  - {role}")
         return
 
     # Convert required skills from CSV text into a list
     required_skills = [
         skill.strip()
         for skill in job["skills"].split(",")
+        if skill.strip()
     ]
 
     # Calculate skill match
@@ -42,16 +51,23 @@ def main():
         result["missing_skills"]
     )
 
+    # Display results
     print("\n===== SkillBridge AI =====")
     print(f"Target Role: {target_role}")
 
     print("\nSkills You Have:")
-    for skill in result["matching_skills"]:
-        print(f"  ✓ {skill}")
+    if result["matching_skills"]:
+        for skill in result["matching_skills"]:
+            print(f"  ✓ {skill}")
+    else:
+        print("  None")
 
     print("\nSkills You Need:")
-    for skill in result["missing_skills"]:
-        print(f"  ✗ {skill}")
+    if result["missing_skills"]:
+        for skill in result["missing_skills"]:
+            print(f"  ✗ {skill}")
+    else:
+        print("  None")
 
     print(
         f"\nSkill Match: {result['match_percentage']}%"
@@ -60,7 +76,10 @@ def main():
     print("\nRecommended Skills to Learn:")
 
     if recommended_skills:
-        for index, skill in enumerate(recommended_skills, start=1):
+        for index, skill in enumerate(
+            recommended_skills,
+            start=1
+        ):
             print(f"  {index}. {skill}")
     else:
         print("  You already have all the required skills!")
