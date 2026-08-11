@@ -36,10 +36,11 @@ def main():
         student_skills,
         required_skills
     )
+
+    # Generate skill recommendations
     recommended_skills = recommend_skills(
-    result["missing_skills"]
-)
-    
+        result["missing_skills"]
+    )
 
     print("\n===== SkillBridge AI =====")
     print(f"Target Role: {target_role}")
@@ -55,13 +56,14 @@ def main():
     print(
         f"\nSkill Match: {result['match_percentage']}%"
     )
+
     print("\nRecommended Skills to Learn:")
 
-if recommend_skills:
-    for index, skill in enumerate(recommend_skills, start=1):
-        print(f"  {index}. {skill}")
-else:
-    print("  You already have all the required skills!")
+    if recommended_skills:
+        for index, skill in enumerate(recommended_skills, start=1):
+            print(f"  {index}. {skill}")
+    else:
+        print("  You already have all the required skills!")
 
 
 if __name__ == "__main__":
