@@ -1,3 +1,5 @@
+from difflib import get_close_matches
+
 from data_loader import load_job_roles, get_job_role
 from skill_matcher import calculate_skill_match
 from recommendation_engine import recommend_skills
@@ -26,11 +28,28 @@ def main():
     # Find the target role
     job = get_job_role(data, target_role)
 
+    # Handle invalid job role
     if job is None:
         print(f"\nJob role '{target_role}' was not found.")
-        print("\nAvailable roles:")
-        for role in data["role"]:
-            print(f"  - {role}")
+
+        available_roles = data["role"].tolist()
+
+        suggestions = get_close_matches(
+            target_role,
+            available_roles,
+            n=3,
+            cutoff=0.5
+        )
+
+        if suggestions:
+            print("\nDid you mean:")
+            for index, role in enumerate(suggestions, start=1):
+                print(f"  {index}. {role}")
+        else:
+            print("\nAvailable roles:")
+            for role in available_roles:
+                print(f"  - {role}")
+
         return
 
     # Convert required skills from CSV text into a list
