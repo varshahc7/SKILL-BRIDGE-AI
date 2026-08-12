@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillBridge AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 17px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .metric h2 {
+            margin: 5px 0;
+        }
+
+        .section-title {
+            margin-top: 25px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        ul {
+            padding-left: 22px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .success {
+            padding: 15px;
+            border-radius: 10px;
+            background: #ecfdf5;
+        }
+
+        .warning {
+            padding: 15px;
+            border-radius: 10px;
+            background: #fffbeb;
+        }
+
+        .error {
+            padding: 15px;
+            border-radius: 10px;
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .roadmap-item {
+            margin-bottom: 20px;
+        }
+
+        .roadmap-item h4 {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>SkillBridge AI</h1>
+        <p>Analyze your skills and discover your career readiness.</p>
+    </div>
+
+    <div class="card">
+
+        <form method="POST">
+
+            <label for="skills">
+                Your Skills
+            </label>
+
+            <input
+                type="text"
+                id="skills"
+                name="skills"
+                placeholder="Python, Pandas, SQL, Git"
+                required
+            >
+
+            <label for="job_role">
+                Target Job Role
+            </label>
+
+            <select
+                id="job_role"
+                name="job_role"
+                required
+            >
+
+                <option value="">
+                    Select a job role
+                </option>
+
+                {% for role in roles %}
+                    <option value="{{ role }}">
+                        {{ role }}
+                    </option>
+                {% endfor %}
+
+            </select>
+
+            <button type="submit">
+                Analyze My Skills
+            </button>
+
+        </form>
+
+    </div>
+
+
+    {% if result %}
+
+        {% if result.error %}
+
+            <div class="card">
+                <div class="error">
+                    {{ result.error }}
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="card">
+
+                <h2>
+                    Career Analysis
+                </h2>
+
+                <p>
+                    <strong>
+                        Target Role:
+                    </strong>
+
+                    {{ result.target_role }}
+                </p>
+
+                <div class="metric">
+
+                    <p>
+                        Skill Match
+                    </p>
+
+                    <h2>
+                        {{ result.match_percentage }}%
+                    </h2>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <p>
+                        Career Readiness
+                    </p>
+
+                    <h2>
+                        {{ result.readiness_level }}
+                    </h2>
+
+                </div>
+
+                {% if result.readiness_level == "Job Ready" %}
+
+                    <div class="success">
+                        {{ result.career_summary }}
+                    </div>
+
+                {% else %}
+
+                    <div class="warning">
+                        {{ result.career_summary }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="card">
+
+                <h2 class="section-title">
+                    Skills You Have
+                </h2>
+
+                {% if result.matching_skills %}
+
+                    <ul>
+
+                        {% for skill in result.matching_skills %}
+
+                            <li>
+                                ✓ {{ skill }}
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                {% else %}
+
+                    <p>
+                        No matching skills found.
+                    </p>
+
+                {% endif %}
+
+
+                <h2 class="section-title">
+                    Skills You Need
+                </h2>
+
+                {% if result.missing_skills %}
+
+                    <ul>
+
+                        {% for skill in result.missing_skills %}
+
+                            <li>
+                                ✗ {{ skill }}
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                {% else %}
+
+                    <p>
+                        You have all required skills!
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>
+                    Recommended Skills
+                </h2>
+
+                {% if result.recommended_skills %}
+
+                    <ol>
+
+                        {% for skill in result.recommended_skills %}
+
+                            <li>
+                                {{ skill }}
+                            </li>
+
+                        {% endfor %}
+
+                    </ol>
+
+                {% else %}
+
+                    <p>
+                        You already have all the required skills!
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if result.roadmap %}
+
+                <div class="card">
+
+                    <h2>
+                        Learning Roadmap
+                    </h2>
+
+                    {% for skill, topics in result.roadmap.items() %}
+
+                        <div class="roadmap-item">
+
+                            <h4>
+                                {{ skill }}
+                            </h4>
+
+                            <ul>
+
+                                {% for topic in topics %}
+
+                                    <li>
+                                        → {{ topic }}
+                                    </li>
+
+                                {% endfor %}
+
+                            </ul>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endif %}
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
