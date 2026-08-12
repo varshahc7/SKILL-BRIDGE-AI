@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>SkillBridge AI</title>
 
@@ -16,14 +19,21 @@
 
 <div class="container">
 
-    <!-- HEADER -->
+    <!-- Header -->
+
     <div class="header">
+
         <h1>SkillBridge AI</h1>
-        <p>Analyze your skills and discover your career readiness.</p>
+
+        <p>
+            AI-powered career skill gap analysis
+        </p>
+
     </div>
 
 
-    <!-- INPUT CARD -->
+    <!-- Input Form -->
+
     <div class="card">
 
         <form method="POST">
@@ -55,7 +65,7 @@
 
 
             <button type="submit">
-                Analyze My Skills
+                Analyze My Career
             </button>
 
         </form>
@@ -63,37 +73,10 @@
     </div>
 
 
-    {% if error %}
-
-    <!-- ERROR -->
-    <div class="card">
-
-        <div class="error">
-            {{ error }}
-        </div>
-
-        {% if suggestions %}
-
-        <h3 class="section-title">
-            Did you mean?
-        </h3>
-
-        <ul>
-            {% for suggestion in suggestions %}
-            <li>{{ suggestion }}</li>
-            {% endfor %}
-        </ul>
-
-        {% endif %}
-
-    </div>
-
-    {% endif %}
-
-
     {% if result %}
 
-    <!-- RESULTS -->
+    <!-- Results -->
+
     <div class="card">
 
         <h2 class="results-title">
@@ -101,26 +84,44 @@
         </h2>
 
 
-        <!-- METRICS -->
+        <!-- Metrics -->
+
         <div class="metrics">
+
+            <!-- Skill Match -->
 
             <div class="metric">
 
-                <p>Skill Match</p>
+                <p>
+                    Skill Match
+                </p>
 
                 <h2>
                     {{ result.match_percentage }}%
                 </h2>
 
+                <div class="progress-container">
+
+                    <div
+                        class="progress-bar"
+                        style="width: {{ result.match_percentage }}%;"
+                    ></div>
+
+                </div>
+
             </div>
 
 
+            <!-- Career Readiness -->
+
             <div class="metric">
 
-                <p>Career Readiness</p>
+                <p>
+                    Career Readiness
+                </p>
 
                 <h2>
-                    {{ readiness }}
+                    {{ result.readiness }}
                 </h2>
 
             </div>
@@ -128,7 +129,8 @@
         </div>
 
 
-        <!-- MATCHING SKILLS -->
+        <!-- Skills You Have -->
+
         <h3 class="section-title">
             Skills You Have
         </h3>
@@ -149,12 +151,15 @@
 
         {% else %}
 
-        <p>No matching skills found.</p>
+        <p>
+            No matching skills found.
+        </p>
 
         {% endif %}
 
 
-        <!-- MISSING SKILLS -->
+        <!-- Skills You Need -->
+
         <h3 class="section-title">
             Skills You Need
         </h3>
@@ -175,23 +180,24 @@
 
         {% else %}
 
-        <div class="success">
-            You already have all the required skills!
-        </div>
+        <p>
+            You already have all required skills.
+        </p>
 
         {% endif %}
 
 
-        <!-- RECOMMENDATIONS -->
+        <!-- Recommended Skills -->
+
         <h3 class="section-title">
             Recommended Skills to Learn
         </h3>
 
-        {% if recommended_skills %}
+        {% if result.recommended_skills %}
 
         <ol>
 
-            {% for skill in recommended_skills %}
+            {% for skill in result.recommended_skills %}
 
             <li>
                 {{ skill }}
@@ -203,26 +209,27 @@
 
         {% else %}
 
-        <div class="success">
+        <p>
             You already have all the required skills!
-        </div>
+        </p>
 
         {% endif %}
 
 
-        <!-- LEARNING ROADMAP -->
-        {% if roadmap %}
+        <!-- Learning Roadmap -->
+
+        {% if result.roadmap %}
 
         <h3 class="section-title">
             Learning Roadmap
         </h3>
 
-        {% for skill, topics in roadmap.items() %}
+        {% for skill, topics in result.roadmap.items() %}
 
         <div class="roadmap-item">
 
             <h4>
-                {{ skill.title() }}
+                {{ skill }}
             </h4>
 
             <ul>
@@ -244,18 +251,17 @@
         {% endif %}
 
 
-        <!-- CAREER ANALYSIS -->
-        {% if career_analysis %}
+        <!-- Career Analysis -->
+
+        {% if result.career_analysis %}
 
         <h3 class="section-title">
             Career Analysis
         </h3>
 
-        <div class="warning">
-
-            {{ career_analysis }}
-
-        </div>
+        <p>
+            {{ result.career_analysis }}
+        </p>
 
         {% endif %}
 
@@ -264,14 +270,16 @@
     {% endif %}
 
 
-    <!-- FOOTER -->
+    <!-- Footer -->
+
     <div class="footer">
 
-        SkillBridge AI · Career Skill Gap Analyzer
+        SkillBridge AI • Career Skill Gap Analyzer
 
     </div>
 
 </div>
 
 </body>
+
 </html>
