@@ -1,5 +1,6 @@
 from difflib import get_close_matches
 
+from learning_roadmap import LEARNING_ROADMAP
 from data_loader import load_job_roles, get_job_role
 from skill_matcher import calculate_skill_match
 from recommendation_engine import recommend_skills
@@ -100,6 +101,21 @@ def main():
             start=1
         ):
             print(f"  {index}. {skill}")
+
+        # Display learning roadmap
+        print("\nLearning Roadmap:")
+
+        for skill in recommended_skills:
+            topics = LEARNING_ROADMAP.get(skill.lower())
+
+            if topics:
+                print(f"\n{skill.title()}:")
+                for topic in topics:
+                    print(f"  → {topic}")
+            else:
+                print(f"\n{skill.title()}:")
+                print("  → No roadmap available yet.")
+
     else:
         print("  You already have all the required skills!")
 
