@@ -1,6 +1,7 @@
 from difflib import get_close_matches
 
 from learning_roadmap import LEARNING_ROADMAP
+from career_readiness import calculate_readiness
 from data_loader import load_job_roles, get_job_role
 from skill_matcher import calculate_skill_match
 from recommendation_engine import recommend_skills
@@ -10,7 +11,7 @@ def main():
     # Load job-role dataset
     data = load_job_roles()
 
-    # Get student's skills from user
+    # Get student's skills
     student_input = input(
         "Enter your skills (comma-separated): "
     )
@@ -21,7 +22,7 @@ def main():
         if skill.strip()
     ]
 
-    # Get target job role from user
+    # Get target job role
     target_role = input(
         "Enter your target job role: "
     ).strip()
@@ -53,7 +54,7 @@ def main():
 
         return
 
-    # Convert required skills from CSV text into a list
+    # Convert required skills into a list
     required_skills = [
         skill.strip()
         for skill in job["skills"].split(",")
@@ -66,9 +67,14 @@ def main():
         required_skills
     )
 
-    # Generate skill recommendations
+    # Generate recommendations
     recommended_skills = recommend_skills(
         result["missing_skills"]
+    )
+
+    # Calculate career readiness
+    readiness_level = calculate_readiness(
+        result["match_percentage"]
     )
 
     # Display results
@@ -76,6 +82,7 @@ def main():
     print(f"Target Role: {target_role}")
 
     print("\nSkills You Have:")
+
     if result["matching_skills"]:
         for skill in result["matching_skills"]:
             print(f"  ✓ {skill}")
@@ -83,6 +90,7 @@ def main():
         print("  None")
 
     print("\nSkills You Need:")
+
     if result["missing_skills"]:
         for skill in result["missing_skills"]:
             print(f"  ✗ {skill}")
@@ -93,6 +101,11 @@ def main():
         f"\nSkill Match: {result['match_percentage']}%"
     )
 
+    print(
+        f"Career Readiness: {readiness_level}"
+    )
+
+    # Recommended skills
     print("\nRecommended Skills to Learn:")
 
     if recommended_skills:
@@ -102,14 +115,17 @@ def main():
         ):
             print(f"  {index}. {skill}")
 
-        # Display learning roadmap
+        # Learning roadmap
         print("\nLearning Roadmap:")
 
         for skill in recommended_skills:
-            topics = LEARNING_ROADMAP.get(skill.lower())
+            topics = LEARNING_ROADMAP.get(
+                skill.lower()
+            )
 
             if topics:
                 print(f"\n{skill.title()}:")
+
                 for topic in topics:
                     print(f"  → {topic}")
             else:
@@ -117,7 +133,9 @@ def main():
                 print("  → No roadmap available yet.")
 
     else:
-        print("  You already have all the required skills!")
+        print(
+            "  You already have all the required skills!"
+        )
 
 
 if __name__ == "__main__":
