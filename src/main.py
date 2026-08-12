@@ -2,6 +2,7 @@ from difflib import get_close_matches
 
 from learning_roadmap import LEARNING_ROADMAP
 from career_readiness import calculate_readiness
+from career_analysis import generate_career_summary
 from data_loader import load_job_roles, get_job_role
 from skill_matcher import calculate_skill_match
 from recommendation_engine import recommend_skills
@@ -77,6 +78,14 @@ def main():
         result["match_percentage"]
     )
 
+    # Generate career summary
+    career_summary = generate_career_summary(
+        target_role,
+        result["match_percentage"],
+        readiness_level,
+        result["missing_skills"]
+    )
+
     # Display results
     print("\n===== SkillBridge AI =====")
     print(f"Target Role: {target_role}")
@@ -105,7 +114,9 @@ def main():
         f"Career Readiness: {readiness_level}"
     )
 
-    # Recommended skills
+    print("\n===== Career Analysis =====")
+    print(career_summary)
+
     print("\nRecommended Skills to Learn:")
 
     if recommended_skills:
@@ -115,7 +126,6 @@ def main():
         ):
             print(f"  {index}. {skill}")
 
-        # Learning roadmap
         print("\nLearning Roadmap:")
 
         for skill in recommended_skills:
