@@ -966,7 +966,64 @@ careerForm.addEventListener(
 
 </script>
 
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="loading-overlay">
 
+    <div class="loading-card">
+
+        <div class="ai-loader">
+
+            <div class="loader-ring"></div>
+
+            <div class="loader-icon">
+                🧠
+            </div>
+
+        </div>
+
+        <h2>Analyzing Your Career</h2>
+
+        <p>
+            SkillBridge AI is analyzing your skills
+            and building your career roadmap...
+        </p>
+
+        <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const careerForm =
+    document.querySelector("form");
+
+const loadingOverlay =
+    document.getElementById("loadingOverlay");
+
+
+if (careerForm) {
+
+    careerForm.addEventListener(
+        "submit",
+        function () {
+
+            loadingOverlay.classList.add(
+                "show"
+            );
+
+        }
+    );
+
+}
+
+</script>
 </body>
 
 </html>
