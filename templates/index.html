@@ -2,10 +2,13 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>SkillBridge AI</title>
 
@@ -13,13 +16,18 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='style.css') }}"
     >
+
 </head>
+
 
 <body>
 
 <div class="container">
 
-    <!-- Header -->
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
 
     <div class="header">
 
@@ -32,73 +40,244 @@
     </div>
 
 
-    <!-- Input Form -->
+
+    <!-- =====================================================
+         INPUT CARD
+         ===================================================== -->
 
     <div class="card">
 
-        <form method="POST">
+        <form
+            method="POST"
+            id="careerForm"
+        >
 
-            <label for="skills">
+
+            <!-- YOUR SKILLS -->
+
+            <label>
                 Your Skills
             </label>
 
-            <input
-                type="text"
-                id="skills"
-                name="skills"
-                placeholder="Example: Python, Pandas, NumPy, Git"
-                required
+
+            <div
+                class="skills-selector"
+                id="skillsSelector"
             >
 
+
+                <div
+                    class="selected-skills"
+                    id="selectedSkills"
+                >
+
+                    <span class="placeholder">
+                        Select your skills...
+                    </span>
+
+                </div>
+
+
+
+                <div class="skills-dropdown">
+
+
+                    <input
+                        type="text"
+                        id="skillSearch"
+                        placeholder="🔍 Search skills..."
+                        autocomplete="off"
+                    >
+
+
+                    <div
+                        class="skills-list"
+                        id="skillsList"
+                    >
+
+
+                        {% set skills = [
+                            "Python",
+                            "Pandas",
+                            "NumPy",
+                            "Git",
+                            "SQL",
+                            "Statistics",
+                            "Data Visualization",
+                            "Machine Learning",
+                            "Scikit-learn",
+                            "Deep Learning",
+                            "NLP",
+                            "TensorFlow",
+                            "PyTorch",
+                            "JavaScript",
+                            "React",
+                            "HTML",
+                            "CSS",
+                            "Docker",
+                            "Linux",
+                            "Excel"
+                        ] %}
+
+
+                        {% for skill in skills %}
+
+                        <label class="skill-option">
+
+                            <input
+                                type="checkbox"
+                                value="{{ skill }}"
+                            >
+
+                            <span>
+                                {{ skill }}
+                            </span>
+
+                        </label>
+
+                        {% endfor %}
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <input
+                type="hidden"
+                name="skills"
+                id="skillsInput"
+            >
+
+
+            <p class="help-text">
+
+                Click the box above and select
+                all the skills you have.
+
+            </p>
+
+
+
+            <!-- TARGET ROLE -->
 
             <label for="role">
+
                 Target Job Role
+
             </label>
 
-            <input
-                type="text"
+
+            <select
                 id="role"
                 name="role"
-                placeholder="Example: Machine Learning Engineer"
                 required
             >
 
+                <option value="">
+                    Select a job role
+                </option>
+
+                <option value="Data Analyst">
+                    Data Analyst
+                </option>
+
+                <option value="Machine Learning Engineer">
+                    Machine Learning Engineer
+                </option>
+
+                <option value="Data Scientist">
+                    Data Scientist
+                </option>
+
+                <option value="Software Developer">
+                    Software Developer
+                </option>
+
+                <option value="Web Developer">
+                    Web Developer
+                </option>
+
+                <option value="AI Engineer">
+                    AI Engineer
+                </option>
+
+                <option value="Backend Developer">
+                    Backend Developer
+                </option>
+
+                <option value="Frontend Developer">
+                    Frontend Developer
+                </option>
+
+                <option value="Cloud Engineer">
+                    Cloud Engineer
+                </option>
+
+                <option value="DevOps Engineer">
+                    DevOps Engineer
+                </option>
+
+            </select>
+
+
+
+            <!-- BUTTON -->
 
             <button type="submit">
+
                 Analyze My Career
+
             </button>
+
 
         </form>
 
     </div>
 
 
+
+    <!-- =====================================================
+         CAREER DASHBOARD
+         ===================================================== -->
+
     {% if result %}
 
-    <!-- Results -->
+    <div class="card results-card">
 
-    <div class="card">
 
         <h2 class="results-title">
-            Career Analysis
+
+            Career Dashboard
+
         </h2>
 
 
-        <!-- Metrics -->
+
+        <!-- =================================================
+             DASHBOARD CARDS
+             ================================================= -->
 
         <div class="metrics">
 
-            <!-- Skill Match -->
+
+            <!-- SKILL MATCH -->
 
             <div class="metric">
 
                 <p>
-                    Skill Match
+                    🎯 Skill Match
                 </p>
 
                 <h2>
+
                     {{ result.match_percentage }}%
+
                 </h2>
+
 
                 <div class="progress-container">
 
@@ -112,42 +291,134 @@
             </div>
 
 
-            <!-- Career Readiness -->
+
+            <!-- READINESS -->
 
             <div class="metric">
 
                 <p>
-                    Career Readiness
+                    🚀 Career Readiness
                 </p>
 
                 <h2>
+
                     {{ result.readiness }}
+
                 </h2>
 
             </div>
 
+
         </div>
 
 
-        <!-- Skills You Have -->
+
+        <!-- =================================================
+             CAREER SNAPSHOT
+             ================================================= -->
+
+        <div class="career-snapshot">
+
+
+            <div class="snapshot-item">
+
+                <span class="snapshot-icon">
+                    💼
+                </span>
+
+                <div>
+
+                    <small>
+                        Target Role
+                    </small>
+
+                    <strong>
+                        {{ result.target_role }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="snapshot-item">
+
+                <span class="snapshot-icon">
+                    📚
+                </span>
+
+                <div>
+
+                    <small>
+                        Skills to Learn
+                    </small>
+
+                    <strong>
+                        {{ result.missing_skills|length }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="snapshot-item">
+
+                <span class="snapshot-icon">
+                    🧠
+                </span>
+
+                <div>
+
+                    <small>
+                        Skills You Have
+                    </small>
+
+                    <strong>
+                        {{ result.matching_skills|length }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             SKILLS YOU HAVE
+             ================================================= -->
 
         <h3 class="section-title">
+
             Skills You Have
+
         </h3>
+
 
         {% if result.matching_skills %}
 
-        <ul>
+        <div class="skill-result-grid">
 
             {% for skill in result.matching_skills %}
 
-            <li>
-                ✓ {{ skill }}
-            </li>
+            <div class="result-skill success">
+
+                <span>
+                    ✓
+                </span>
+
+                {{ skill }}
+
+            </div>
 
             {% endfor %}
 
-        </ul>
+        </div>
 
         {% else %}
 
@@ -158,91 +429,140 @@
         {% endif %}
 
 
-        <!-- Skills You Need -->
+
+        <!-- =================================================
+             SKILLS YOU NEED
+             ================================================= -->
 
         <h3 class="section-title">
+
             Skills You Need
+
         </h3>
+
 
         {% if result.missing_skills %}
 
-        <ul>
+        <div class="skill-result-grid">
 
             {% for skill in result.missing_skills %}
 
-            <li>
-                ✗ {{ skill }}
-            </li>
+            <div class="result-skill missing">
+
+                <span>
+                    ✗
+                </span>
+
+                {{ skill }}
+
+            </div>
 
             {% endfor %}
 
-        </ul>
+        </div>
 
         {% else %}
 
         <p>
-            You already have all required skills.
+
+            🎉 You already have all the
+            required skills!
+
         </p>
 
         {% endif %}
 
 
-        <!-- Recommended Skills -->
+
+        <!-- =================================================
+             RECOMMENDATIONS
+             ================================================= -->
 
         <h3 class="section-title">
+
             Recommended Skills to Learn
+
         </h3>
+
 
         {% if result.recommended_skills %}
 
-        <ol>
+        <div class="recommendation-list">
 
             {% for skill in result.recommended_skills %}
 
-            <li>
-                {{ skill }}
-            </li>
+            <div class="recommendation-item">
+
+                <span class="recommendation-number">
+
+                    {{ loop.index }}
+
+                </span>
+
+                <span>
+
+                    {{ skill }}
+
+                </span>
+
+            </div>
 
             {% endfor %}
 
-        </ol>
+        </div>
 
         {% else %}
 
         <p>
-            You already have all the required skills!
+
+            You already have all the
+            required skills!
+
         </p>
 
         {% endif %}
 
 
-        <!-- Learning Roadmap -->
+
+        <!-- =================================================
+             LEARNING ROADMAP
+             ================================================= -->
 
         {% if result.roadmap %}
 
         <h3 class="section-title">
-            Learning Roadmap
+
+            📚 Learning Roadmap
+
         </h3>
+
 
         {% for skill, topics in result.roadmap.items() %}
 
         <div class="roadmap-item">
 
+
             <h4>
+
                 {{ skill }}
+
             </h4>
+
 
             <ul>
 
                 {% for topic in topics %}
 
                 <li>
+
                     → {{ topic }}
+
                 </li>
 
                 {% endfor %}
 
             </ul>
+
 
         </div>
 
@@ -251,26 +571,38 @@
         {% endif %}
 
 
-        <!-- Career Analysis -->
+
+        <!-- =================================================
+             CAREER ANALYSIS
+             ================================================= -->
 
         {% if result.career_analysis %}
 
         <h3 class="section-title">
-            Career Analysis
+
+            💡 Career Analysis
+
         </h3>
 
-        <p>
+
+        <div class="career-analysis">
+
             {{ result.career_analysis }}
-        </p>
+
+        </div>
 
         {% endif %}
+
 
     </div>
 
     {% endif %}
 
 
-    <!-- Footer -->
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
 
     <div class="footer">
 
@@ -278,7 +610,362 @@
 
     </div>
 
+
 </div>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+
+const skillsSelector =
+    document.getElementById(
+        "skillsSelector"
+    );
+
+
+const selectedSkills =
+    document.getElementById(
+        "selectedSkills"
+    );
+
+
+const skillsInput =
+    document.getElementById(
+        "skillsInput"
+    );
+
+
+const skillSearch =
+    document.getElementById(
+        "skillSearch"
+    );
+
+
+const careerForm =
+    document.getElementById(
+        "careerForm"
+    );
+
+
+const skillOptions =
+    document.querySelectorAll(
+        ".skill-option"
+    );
+
+
+
+/* =========================================================
+   OPEN DROPDOWN
+   ========================================================= */
+
+selectedSkills.addEventListener(
+    "click",
+    function () {
+
+        skillsSelector.classList.toggle(
+            "open"
+        );
+
+
+        if (
+            skillsSelector.classList.contains(
+                "open"
+            )
+        ) {
+
+            skillSearch.focus();
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   CHECKBOXES
+   ========================================================= */
+
+skillOptions.forEach(
+    function (option) {
+
+        const checkbox =
+            option.querySelector(
+                "input"
+            );
+
+
+        checkbox.addEventListener(
+            "change",
+            updateSkills
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   UPDATE SELECTED SKILLS
+   ========================================================= */
+
+function updateSkills() {
+
+
+    const checked =
+        document.querySelectorAll(
+            ".skill-option input:checked"
+        );
+
+
+    const skills = [];
+
+
+    checked.forEach(
+        function (checkbox) {
+
+            skills.push(
+                checkbox.value
+            );
+
+        }
+    );
+
+
+    skillsInput.value =
+        skills.join(",");
+
+
+    selectedSkills.innerHTML = "";
+
+
+    if (
+        skills.length === 0
+    ) {
+
+        const placeholder =
+            document.createElement(
+                "span"
+            );
+
+
+        placeholder.className =
+            "placeholder";
+
+
+        placeholder.textContent =
+            "Select your skills...";
+
+
+        selectedSkills.appendChild(
+            placeholder
+        );
+
+
+        return;
+
+    }
+
+
+
+    skills.forEach(
+        function (skill) {
+
+
+            const chip =
+                document.createElement(
+                    "span"
+                );
+
+
+            chip.className =
+                "skill-chip";
+
+
+            const text =
+                document.createElement(
+                    "span"
+                );
+
+
+            text.textContent =
+                skill;
+
+
+            const remove =
+                document.createElement(
+                    "span"
+                );
+
+
+            remove.className =
+                "remove-skill";
+
+
+            remove.textContent =
+                "×";
+
+
+            remove.addEventListener(
+                "click",
+                function (event) {
+
+                    event.stopPropagation();
+
+
+                    const checkbox =
+                        Array.from(
+                            document.querySelectorAll(
+                                ".skill-option input"
+                            )
+                        ).find(
+                            function (input) {
+
+                                return (
+                                    input.value ===
+                                    skill
+                                );
+
+                            }
+                        );
+
+
+                    if (checkbox) {
+
+                        checkbox.checked =
+                            false;
+
+                    }
+
+
+                    updateSkills();
+
+                }
+            );
+
+
+            chip.appendChild(text);
+
+            chip.appendChild(remove);
+
+            selectedSkills.appendChild(chip);
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   SEARCH SKILLS
+   ========================================================= */
+
+skillSearch.addEventListener(
+    "input",
+    function () {
+
+
+        const search =
+            skillSearch.value
+                .toLowerCase()
+                .trim();
+
+
+        skillOptions.forEach(
+            function (option) {
+
+
+                const text =
+                    option
+                        .querySelector(
+                            "span"
+                        )
+                        .textContent
+                        .toLowerCase();
+
+
+                option.style.display =
+                    text.includes(search)
+                        ? "flex"
+                        : "none";
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   CLOSE DROPDOWN
+   ========================================================= */
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+
+        if (
+            !skillsSelector.contains(
+                event.target
+            )
+        ) {
+
+            skillsSelector.classList.remove(
+                "open"
+            );
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   FORM SUBMIT
+   ========================================================= */
+
+careerForm.addEventListener(
+    "submit",
+    function (event) {
+
+
+        updateSkills();
+
+
+        const selected =
+            document.querySelectorAll(
+                ".skill-option input:checked"
+            );
+
+
+        if (
+            selected.length === 0
+        ) {
+
+            event.preventDefault();
+
+
+            alert(
+                "Please select at least one skill."
+            );
+
+        }
+
+    }
+);
+
+
+</script>
+
 
 </body>
 
