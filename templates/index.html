@@ -258,7 +258,7 @@
 
 
         <!-- =================================================
-             DASHBOARD CARDS
+             DASHBOARD METRICS
              ================================================= -->
 
         <div class="metrics">
@@ -266,27 +266,43 @@
 
             <!-- SKILL MATCH -->
 
-            <div class="metric">
+            <div class="metric skill-match-metric">
 
                 <p>
                     🎯 Skill Match
                 </p>
 
-                <h2>
 
-                    {{ result.match_percentage }}%
+                <!-- CIRCULAR GAUGE -->
 
-                </h2>
+                <div
+                    class="skill-gauge"
+                    style="--match: {{ result.match_percentage }}%;"
+                >
 
+                    <div class="gauge-inner">
 
-                <div class="progress-container">
+                        <span
+                            class="gauge-number"
+                            data-value="{{ result.match_percentage }}"
+                        >
+                            0%
+                        </span>
 
-                    <div
-                        class="progress-bar"
-                        style="width: {{ result.match_percentage }}%;"
-                    ></div>
+                        <span class="gauge-label">
+                            MATCH
+                        </span>
+
+                    </div>
 
                 </div>
+
+
+                <!-- HIDDEN ACCESSIBLE VALUE -->
+
+                <span class="match-value-hidden">
+                    {{ result.match_percentage }}%
+                </span>
 
             </div>
 
@@ -294,7 +310,7 @@
 
             <!-- READINESS -->
 
-            <div class="metric">
+            <div class="metric readiness-metric">
 
                 <p>
                     🚀 Career Readiness
@@ -305,6 +321,25 @@
                     {{ result.readiness }}
 
                 </h2>
+
+
+                <div class="readiness-decoration">
+
+                    {% if result.readiness == "Job Ready" %}
+
+                        🟢
+
+                    {% elif result.readiness == "Developing" %}
+
+                        🟡
+
+                    {% else %}
+
+                        🔴
+
+                    {% endif %}
+
+                </div>
 
             </div>
 
@@ -616,11 +651,62 @@
 
 
 <!-- =========================================================
+     LOADING OVERLAY
+     ========================================================= -->
+
+<div
+    id="loadingOverlay"
+    class="loading-overlay"
+>
+
+    <div class="loading-card">
+
+        <div class="ai-loader">
+
+            <div class="loader-ring"></div>
+
+            <div class="loader-icon">
+                🧠
+            </div>
+
+        </div>
+
+        <h2>
+            Analyzing Your Career
+        </h2>
+
+        <p>
+
+            SkillBridge AI is analyzing your
+            skills and building your career
+            roadmap...
+
+        </p>
+
+        <div class="loading-dots">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
      JAVASCRIPT
      ========================================================= -->
 
 <script>
 
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
 
 const skillsSelector =
     document.getElementById(
@@ -655,6 +741,12 @@ const careerForm =
 const skillOptions =
     document.querySelectorAll(
         ".skill-option"
+    );
+
+
+const loadingOverlay =
+    document.getElementById(
+        "loadingOverlay"
     );
 
 
@@ -953,9 +1045,25 @@ careerForm.addEventListener(
 
             event.preventDefault();
 
-
             alert(
                 "Please select at least one skill."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * Show loading animation
+         * only when the form is actually
+         * being submitted.
+         */
+
+        if (loadingOverlay) {
+
+            loadingOverlay.classList.add(
+                "show"
             );
 
         }
@@ -964,66 +1072,95 @@ careerForm.addEventListener(
 );
 
 
-</script>
 
-<!-- Loading Overlay -->
-<div id="loadingOverlay" class="loading-overlay">
+/* =========================================================
+   ANIMATED SKILL MATCH
+   ========================================================= */
 
-    <div class="loading-card">
-
-        <div class="ai-loader">
-
-            <div class="loader-ring"></div>
-
-            <div class="loader-icon">
-                🧠
-            </div>
-
-        </div>
-
-        <h2>Analyzing Your Career</h2>
-
-        <p>
-            SkillBridge AI is analyzing your skills
-            and building your career roadmap...
-        </p>
-
-        <div class="loading-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
-    </div>
-
-</div>
+const gaugeNumber =
+    document.querySelector(
+        ".gauge-number"
+    );
 
 
-<script>
+if (gaugeNumber) {
 
-const careerForm =
-    document.querySelector("form");
+    const target =
+        parseFloat(
+            gaugeNumber.dataset.value
+        );
 
-const loadingOverlay =
-    document.getElementById("loadingOverlay");
+
+    let current = 0;
 
 
-if (careerForm) {
+    const duration = 1200;
 
-    careerForm.addEventListener(
-        "submit",
-        function () {
+    const startTime =
+        performance.now();
 
-            loadingOverlay.classList.add(
-                "show"
+
+    function animateGauge(
+        currentTime
+    ) {
+
+        const elapsed =
+            currentTime - startTime;
+
+
+        const progress =
+            Math.min(
+                elapsed / duration,
+                1
             );
 
+
+        /*
+         * Ease-out animation
+         */
+
+        const eased =
+            1 -
+            Math.pow(
+                1 - progress,
+                3
+            );
+
+
+        current =
+            target * eased;
+
+
+        gaugeNumber.textContent =
+            current.toFixed(1) + "%";
+
+
+        if (progress < 1) {
+
+            requestAnimationFrame(
+                animateGauge
+            );
+
+        } else {
+
+            gaugeNumber.textContent =
+                target.toFixed(1) + "%";
+
         }
+
+    }
+
+
+    requestAnimationFrame(
+        animateGauge
     );
 
 }
 
+
 </script>
+
+
 </body>
 
 </html>
