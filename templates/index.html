@@ -2,13 +2,9 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>SkillBridge AI</title>
 
@@ -16,20 +12,17 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='style.css') }}"
     >
-
 </head>
-
 
 <body>
 
 <div class="container">
 
+    <!-- HEADER -->
 
-    <!-- =====================================================
-         HEADER
-         ===================================================== -->
+    <header class="header">
 
-    <div class="header">
+        <div class="logo-icon">🧠</div>
 
         <h1>SkillBridge AI</h1>
 
@@ -37,34 +30,23 @@
             AI-powered career skill gap analysis
         </p>
 
-    </div>
+    </header>
 
 
+    <!-- INPUT CARD -->
 
-    <!-- =====================================================
-         INPUT CARD
-         ===================================================== -->
+    <div class="card input-card">
 
-    <div class="card">
+        <form method="POST" id="careerForm">
 
-        <form
-            method="POST"
-            id="careerForm"
-        >
+            <!-- SKILLS -->
 
-
-            <!-- YOUR SKILLS -->
-
-            <label>
-                Your Skills
-            </label>
-
+            <label>Your Skills</label>
 
             <div
                 class="skills-selector"
                 id="skillsSelector"
             >
-
 
                 <div
                     class="selected-skills"
@@ -78,9 +60,7 @@
                 </div>
 
 
-
                 <div class="skills-dropdown">
-
 
                     <input
                         type="text"
@@ -94,7 +74,6 @@
                         class="skills-list"
                         id="skillsList"
                     >
-
 
                         {% set skills = [
                             "Python",
@@ -137,13 +116,11 @@
 
                         {% endfor %}
 
-
                     </div>
 
                 </div>
 
             </div>
-
 
 
             <input
@@ -154,20 +131,14 @@
 
 
             <p class="help-text">
-
-                Click the box above and select
-                all the skills you have.
-
+                Click the box above and select all the skills you have.
             </p>
 
 
-
-            <!-- TARGET ROLE -->
+            <!-- JOB ROLE -->
 
             <label for="role">
-
                 Target Job Role
-
             </label>
 
 
@@ -224,15 +195,20 @@
             </select>
 
 
-
             <!-- BUTTON -->
 
-            <button type="submit">
+            <button
+                type="submit"
+                class="analyze-btn"
+            >
 
-                Analyze My Career
+                <span>Analyze My Career</span>
+
+                <span class="button-arrow">
+                    →
+                </span>
 
             </button>
-
 
         </form>
 
@@ -240,29 +216,32 @@
 
 
 
-    <!-- =====================================================
-         CAREER DASHBOARD
-         ===================================================== -->
+    <!-- RESULTS -->
 
     {% if result %}
 
     <div class="card results-card">
 
+        <div class="results-heading">
 
-        <h2 class="results-title">
+            <span class="results-badge">
+                AI ANALYSIS COMPLETE
+            </span>
 
-            Career Dashboard
+            <h2>
+                Career Dashboard
+            </h2>
 
-        </h2>
+            <p>
+                Here's your personalized career analysis.
+            </p>
+
+        </div>
 
 
-
-        <!-- =================================================
-             DASHBOARD METRICS
-             ================================================= -->
+        <!-- MAIN METRICS -->
 
         <div class="metrics">
-
 
             <!-- SKILL MATCH -->
 
@@ -272,8 +251,6 @@
                     🎯 Skill Match
                 </p>
 
-
-                <!-- CIRCULAR GAUGE -->
 
                 <div
                     class="skill-gauge"
@@ -297,15 +274,7 @@
 
                 </div>
 
-
-                <!-- HIDDEN ACCESSIBLE VALUE -->
-
-                <span class="match-value-hidden">
-                    {{ result.match_percentage }}%
-                </span>
-
             </div>
-
 
 
             <!-- READINESS -->
@@ -317,9 +286,7 @@
                 </p>
 
                 <h2>
-
                     {{ result.readiness }}
-
                 </h2>
 
 
@@ -343,17 +310,67 @@
 
             </div>
 
+        </div>
+
+
+
+        <!-- CAREER SCORE -->
+
+        <div class="career-score-card">
+
+            <div class="score-left">
+
+                <div class="score-icon">
+                    ⭐
+                </div>
+
+                <div>
+
+                    <span class="score-small">
+                        OVERALL CAREER SCORE
+                    </span>
+
+                    <h2>
+                        <span
+                            id="careerScore"
+                            data-score="{{ result.match_percentage }}"
+                        >
+                            0
+                        </span>
+                        <span class="score-percent">
+                            / 100
+                        </span>
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="score-right">
+
+                <div class="score-bar">
+
+                    <div
+                        class="score-fill"
+                        style="width: {{ result.match_percentage }}%;"
+                    ></div>
+
+                </div>
+
+                <p>
+                    Based on your current skills and target role
+                </p>
+
+            </div>
 
         </div>
 
 
 
-        <!-- =================================================
-             CAREER SNAPSHOT
-             ================================================= -->
+        <!-- CAREER SNAPSHOT -->
 
         <div class="career-snapshot">
-
 
             <div class="snapshot-item">
 
@@ -374,7 +391,6 @@
                 </div>
 
             </div>
-
 
 
             <div class="snapshot-item">
@@ -398,7 +414,6 @@
             </div>
 
 
-
             <div class="snapshot-item">
 
                 <span class="snapshot-icon">
@@ -419,19 +434,14 @@
 
             </div>
 
-
         </div>
 
 
 
-        <!-- =================================================
-             SKILLS YOU HAVE
-             ================================================= -->
+        <!-- SKILLS YOU HAVE -->
 
         <h3 class="section-title">
-
             Skills You Have
-
         </h3>
 
 
@@ -443,9 +453,7 @@
 
             <div class="result-skill success">
 
-                <span>
-                    ✓
-                </span>
+                <span>✓</span>
 
                 {{ skill }}
 
@@ -465,14 +473,10 @@
 
 
 
-        <!-- =================================================
-             SKILLS YOU NEED
-             ================================================= -->
+        <!-- SKILLS NEEDED -->
 
         <h3 class="section-title">
-
             Skills You Need
-
         </h3>
 
 
@@ -484,9 +488,7 @@
 
             <div class="result-skill missing">
 
-                <span>
-                    ✗
-                </span>
+                <span>✗</span>
 
                 {{ skill }}
 
@@ -498,25 +500,18 @@
 
         {% else %}
 
-        <p>
-
-            🎉 You already have all the
-            required skills!
-
+        <p class="success-message">
+            🎉 You already have all the required skills!
         </p>
 
         {% endif %}
 
 
 
-        <!-- =================================================
-             RECOMMENDATIONS
-             ================================================= -->
+        <!-- RECOMMENDATIONS -->
 
         <h3 class="section-title">
-
             Recommended Skills to Learn
-
         </h3>
 
 
@@ -529,15 +524,11 @@
             <div class="recommendation-item">
 
                 <span class="recommendation-number">
-
                     {{ loop.index }}
-
                 </span>
 
                 <span>
-
                     {{ skill }}
-
                 </span>
 
             </div>
@@ -548,75 +539,61 @@
 
         {% else %}
 
-        <p>
-
-            You already have all the
-            required skills!
-
+        <p class="success-message">
+            🎉 You already have all the required skills!
         </p>
 
         {% endif %}
 
 
 
-        <!-- =================================================
-             LEARNING ROADMAP
-             ================================================= -->
+        <!-- ROADMAP -->
 
         {% if result.roadmap %}
 
         <h3 class="section-title">
-
             📚 Learning Roadmap
-
         </h3>
 
 
-        {% for skill, topics in result.roadmap.items() %}
+        <div class="roadmap-container">
 
-        <div class="roadmap-item">
+            {% for skill, topics in result.roadmap.items() %}
 
+            <div class="roadmap-item">
 
-            <h4>
+                <h4>
+                    {{ skill }}
+                </h4>
 
-                {{ skill }}
+                <ul>
 
-            </h4>
+                    {% for topic in topics %}
 
+                    <li>
+                        → {{ topic }}
+                    </li>
 
-            <ul>
+                    {% endfor %}
 
-                {% for topic in topics %}
+                </ul>
 
-                <li>
+            </div>
 
-                    → {{ topic }}
-
-                </li>
-
-                {% endfor %}
-
-            </ul>
-
+            {% endfor %}
 
         </div>
-
-        {% endfor %}
 
         {% endif %}
 
 
 
-        <!-- =================================================
-             CAREER ANALYSIS
-             ================================================= -->
+        <!-- CAREER ANALYSIS -->
 
         {% if result.career_analysis %}
 
         <h3 class="section-title">
-
             💡 Career Analysis
-
         </h3>
 
 
@@ -628,16 +605,13 @@
 
         {% endif %}
 
-
     </div>
 
     {% endif %}
 
 
 
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
+    <!-- FOOTER -->
 
     <div class="footer">
 
@@ -645,14 +619,11 @@
 
     </div>
 
-
 </div>
 
 
 
-<!-- =========================================================
-     LOADING OVERLAY
-     ========================================================= -->
+<!-- LOADING -->
 
 <div
     id="loadingOverlay"
@@ -676,11 +647,8 @@
         </h2>
 
         <p>
-
-            SkillBridge AI is analyzing your
-            skills and building your career
-            roadmap...
-
+            SkillBridge AI is analyzing your skills
+            and building your career roadmap...
         </p>
 
         <div class="loading-dots">
@@ -697,136 +665,75 @@
 
 
 
-<!-- =========================================================
-     JAVASCRIPT
-     ========================================================= -->
-
 <script>
 
-
-/* =========================================================
-   ELEMENTS
-   ========================================================= */
-
 const skillsSelector =
-    document.getElementById(
-        "skillsSelector"
-    );
-
+    document.getElementById("skillsSelector");
 
 const selectedSkills =
-    document.getElementById(
-        "selectedSkills"
-    );
-
+    document.getElementById("selectedSkills");
 
 const skillsInput =
-    document.getElementById(
-        "skillsInput"
-    );
-
+    document.getElementById("skillsInput");
 
 const skillSearch =
-    document.getElementById(
-        "skillSearch"
-    );
-
+    document.getElementById("skillSearch");
 
 const careerForm =
-    document.getElementById(
-        "careerForm"
-    );
-
+    document.getElementById("careerForm");
 
 const skillOptions =
-    document.querySelectorAll(
-        ".skill-option"
-    );
-
+    document.querySelectorAll(".skill-option");
 
 const loadingOverlay =
-    document.getElementById(
-        "loadingOverlay"
+    document.getElementById("loadingOverlay");
+
+
+
+/* OPEN SKILLS */
+
+selectedSkills.addEventListener("click", function () {
+
+    skillsSelector.classList.toggle("open");
+
+    if (skillsSelector.classList.contains("open")) {
+        skillSearch.focus();
+    }
+
+});
+
+
+
+/* UPDATE SKILLS */
+
+skillOptions.forEach(function (option) {
+
+    const checkbox =
+        option.querySelector("input");
+
+    checkbox.addEventListener(
+        "change",
+        updateSkills
     );
 
+});
 
 
-/* =========================================================
-   OPEN DROPDOWN
-   ========================================================= */
-
-selectedSkills.addEventListener(
-    "click",
-    function () {
-
-        skillsSelector.classList.toggle(
-            "open"
-        );
-
-
-        if (
-            skillsSelector.classList.contains(
-                "open"
-            )
-        ) {
-
-            skillSearch.focus();
-
-        }
-
-    }
-);
-
-
-
-/* =========================================================
-   CHECKBOXES
-   ========================================================= */
-
-skillOptions.forEach(
-    function (option) {
-
-        const checkbox =
-            option.querySelector(
-                "input"
-            );
-
-
-        checkbox.addEventListener(
-            "change",
-            updateSkills
-        );
-
-    }
-);
-
-
-
-/* =========================================================
-   UPDATE SELECTED SKILLS
-   ========================================================= */
 
 function updateSkills() {
-
 
     const checked =
         document.querySelectorAll(
             ".skill-option input:checked"
         );
 
-
     const skills = [];
 
+    checked.forEach(function (checkbox) {
 
-    checked.forEach(
-        function (checkbox) {
+        skills.push(checkbox.value);
 
-            skills.push(
-                checkbox.value
-            );
-
-        }
-    );
+    });
 
 
     skillsInput.value =
@@ -836,132 +743,95 @@ function updateSkills() {
     selectedSkills.innerHTML = "";
 
 
-    if (
-        skills.length === 0
-    ) {
+    if (skills.length === 0) {
 
         const placeholder =
-            document.createElement(
-                "span"
-            );
-
+            document.createElement("span");
 
         placeholder.className =
             "placeholder";
 
-
         placeholder.textContent =
             "Select your skills...";
-
 
         selectedSkills.appendChild(
             placeholder
         );
 
-
         return;
-
     }
 
 
+    skills.forEach(function (skill) {
 
-    skills.forEach(
-        function (skill) {
+        const chip =
+            document.createElement("span");
 
-
-            const chip =
-                document.createElement(
-                    "span"
-                );
+        chip.className =
+            "skill-chip";
 
 
-            chip.className =
-                "skill-chip";
+        const text =
+            document.createElement("span");
+
+        text.textContent =
+            skill;
 
 
-            const text =
-                document.createElement(
-                    "span"
-                );
+        const remove =
+            document.createElement("span");
+
+        remove.className =
+            "remove-skill";
+
+        remove.textContent =
+            "×";
 
 
-            text.textContent =
-                skill;
+        remove.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                const checkbox =
+                    Array.from(
+                        document.querySelectorAll(
+                            ".skill-option input"
+                        )
+                    ).find(function (input) {
+
+                        return input.value === skill;
+
+                    });
 
 
-            const remove =
-                document.createElement(
-                    "span"
-                );
-
-
-            remove.className =
-                "remove-skill";
-
-
-            remove.textContent =
-                "×";
-
-
-            remove.addEventListener(
-                "click",
-                function (event) {
-
-                    event.stopPropagation();
-
-
-                    const checkbox =
-                        Array.from(
-                            document.querySelectorAll(
-                                ".skill-option input"
-                            )
-                        ).find(
-                            function (input) {
-
-                                return (
-                                    input.value ===
-                                    skill
-                                );
-
-                            }
-                        );
-
-
-                    if (checkbox) {
-
-                        checkbox.checked =
-                            false;
-
-                    }
-
-
-                    updateSkills();
-
+                if (checkbox) {
+                    checkbox.checked = false;
                 }
-            );
+
+                updateSkills();
+
+            }
+        );
 
 
-            chip.appendChild(text);
+        chip.appendChild(text);
+        chip.appendChild(remove);
 
-            chip.appendChild(remove);
+        selectedSkills.appendChild(chip);
 
-            selectedSkills.appendChild(chip);
-
-        }
-    );
+    });
 
 }
 
 
 
-/* =========================================================
-   SEARCH SKILLS
-   ========================================================= */
+/* SEARCH */
 
 skillSearch.addEventListener(
     "input",
     function () {
-
 
         const search =
             skillSearch.value
@@ -972,12 +842,9 @@ skillSearch.addEventListener(
         skillOptions.forEach(
             function (option) {
 
-
                 const text =
                     option
-                        .querySelector(
-                            "span"
-                        )
+                        .querySelector("span")
                         .textContent
                         .toLowerCase();
 
@@ -995,14 +862,11 @@ skillSearch.addEventListener(
 
 
 
-/* =========================================================
-   CLOSE DROPDOWN
-   ========================================================= */
+/* CLOSE DROPDOWN */
 
 document.addEventListener(
     "click",
     function (event) {
-
 
         if (
             !skillsSelector.contains(
@@ -1021,14 +885,11 @@ document.addEventListener(
 
 
 
-/* =========================================================
-   FORM SUBMIT
-   ========================================================= */
+/* FORM */
 
 careerForm.addEventListener(
     "submit",
     function (event) {
-
 
         updateSkills();
 
@@ -1039,9 +900,7 @@ careerForm.addEventListener(
             );
 
 
-        if (
-            selected.length === 0
-        ) {
+        if (selected.length === 0) {
 
             event.preventDefault();
 
@@ -1050,37 +909,20 @@ careerForm.addEventListener(
             );
 
             return;
-
         }
 
 
-        /*
-         * Show loading animation
-         * only when the form is actually
-         * being submitted.
-         */
-
-        if (loadingOverlay) {
-
-            loadingOverlay.classList.add(
-                "show"
-            );
-
-        }
+        loadingOverlay.classList.add("show");
 
     }
 );
 
 
 
-/* =========================================================
-   ANIMATED SKILL MATCH
-   ========================================================= */
+/* ANIMATE GAUGE */
 
 const gaugeNumber =
-    document.querySelector(
-        ".gauge-number"
-    );
+    document.querySelector(".gauge-number");
 
 
 if (gaugeNumber) {
@@ -1090,19 +932,13 @@ if (gaugeNumber) {
             gaugeNumber.dataset.value
         );
 
-
-    let current = 0;
-
-
     const duration = 1200;
 
     const startTime =
         performance.now();
 
 
-    function animateGauge(
-        currentTime
-    ) {
+    function animateGauge(currentTime) {
 
         const elapsed =
             currentTime - startTime;
@@ -1115,10 +951,6 @@ if (gaugeNumber) {
             );
 
 
-        /*
-         * Ease-out animation
-         */
-
         const eased =
             1 -
             Math.pow(
@@ -1127,12 +959,8 @@ if (gaugeNumber) {
             );
 
 
-        current =
-            target * eased;
-
-
         gaugeNumber.textContent =
-            current.toFixed(1) + "%";
+            (target * eased).toFixed(1) + "%";
 
 
         if (progress < 1) {
@@ -1140,11 +968,6 @@ if (gaugeNumber) {
             requestAnimationFrame(
                 animateGauge
             );
-
-        } else {
-
-            gaugeNumber.textContent =
-                target.toFixed(1) + "%";
 
         }
 
@@ -1158,8 +981,75 @@ if (gaugeNumber) {
 }
 
 
-</script>
 
+/* ANIMATE CAREER SCORE */
+
+const careerScore =
+    document.getElementById("careerScore");
+
+
+if (careerScore) {
+
+    const target =
+        parseFloat(
+            careerScore.dataset.score
+        );
+
+    let current = 0;
+
+    const duration = 1300;
+
+    const startTime =
+        performance.now();
+
+
+    function animateScore(currentTime) {
+
+        const elapsed =
+            currentTime - startTime;
+
+
+        const progress =
+            Math.min(
+                elapsed / duration,
+                1
+            );
+
+
+        const eased =
+            1 -
+            Math.pow(
+                1 - progress,
+                3
+            );
+
+
+        current =
+            target * eased;
+
+
+        careerScore.textContent =
+            Math.round(current);
+
+
+        if (progress < 1) {
+
+            requestAnimationFrame(
+                animateScore
+            );
+
+        }
+
+    }
+
+
+    requestAnimationFrame(
+        animateScore
+    );
+
+}
+
+</script>
 
 </body>
 
